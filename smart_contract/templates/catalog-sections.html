@@ -1,0 +1,229 @@
+{% extends "imp_base.html" %}
+{% load static %}
+{% load mptt_tags %}
+
+ {% block script %}
+	
+	<!-- Libs -->
+	<link rel="stylesheet" href="{% static "assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" %}">
+	<link rel="stylesheet" href="{% static "assets/vendor/libs/typeahead-js/typeahead.css" %}">
+	<!-- Page -->
+
+  {% endblock %}
+
+
+{% block content %}
+
+			<!-- Layout content -->
+			<div class="layout-content">
+				<!-- Content -->
+				<div class="cat-sections__content-block mb-3">
+					<div class="container flex-grow-1 container-p-y">
+						<h1 class="main_title font-weight-bold mb-2">
+							{{ rubricator }} 
+						</h1>
+
+						<h4 class="breadcrumbs font-weight-light mb-5">
+							<span>Главная / </span> {{ rubricator }} 
+						</h4>
+
+						<div class="cat-sections__description">
+							{{ rubricator.descrip }} 
+						</div>
+					</div>
+				</div>
+
+				<div class="container flex-grow-1 container-p-y">
+					<div class="cat-sections__popular-section popular-section mb-5">
+						<h2 class="second-title mb-4">Популярные разделы</h2>
+						<div class="popular-section__list row mb-5">
+							
+								{% recursetree rubricator.get_children %} 
+											
+							<div class="col-12 col-md-6 col-lg-4 col-xl-3">
+								<a href="#" class="card popular-section__card d-flex flex-row mb-2">
+									<div class="popular-section__img">
+										{% if node.img %}<img src="{{ node.img.url }}" alt="">{% else %}{% endif %}
+									</div>
+									<div class="card-body popular-section__text d-flex flex-column justify-content-center">
+										<h3>{{ node.name }}  
+											</h3>
+										<p>Услуг: {{ node.get_descendant_count }}</p>
+									</div>
+								</a>
+							</div>{% endrecursetree %}
+					
+						</div>
+					</div>
+
+					<div class="cat-sections__popular-services popular-services mb-5">
+						<h2 class="second-title mb-4">Популярные услуги</h2>
+						<div class="popular-services__list row mb-5">
+{% for qs in cards %}
+							{% for card in qs %}
+							<div class="col-12 col-md-6 col-lg-4 col-xl-3">
+								<a href='{% url 'card_info' rubricator.id card.id %}' class="card popular-services__card mb-2">
+									<div class="popular-services__img">
+										{% if card.img %}<img src="{{ card.img.url }}" alt="">{% else %}{% endif %}
+										<div class="popular-services__stars card-stars">
+											{% if card.rating == 5 %} 
+								<i class="ion ion-md-star text-success"></i>
+											<i class="ion ion-md-star text-success"></i>
+											<i class="ion ion-md-star text-success"></i>
+											<i class="ion ion-md-star text-success"></i>
+											<i class="ion ion-md-star text-success"></i>
+											
+								{% elif card.rating == 4 %}
+								<i class="ion ion-md-star text-success"></i>
+											<i class="ion ion-md-star text-success"></i>
+											<i class="ion ion-md-star text-success"></i>
+											<i class="ion ion-md-star text-success"></i>
+											<i class="ion ion-md-star text-muted"></i>
+								{% elif card.rating == 3 %}
+								<i class="ion ion-md-star text-success"></i>
+											<i class="ion ion-md-star text-success"></i>
+											<i class="ion ion-md-star text-success"></i>
+											<i class="ion ion-md-star text-muted"></i>
+											<i class="ion ion-md-star text-muted"></i>
+								{% elif card.rating == 2 %}
+								<i class="ion ion-md-star text-success"></i>
+											<i class="ion ion-md-star text-success"></i>
+											<i class="ion ion-md-star text-muted"></i>
+											<i class="ion ion-md-star text-muted"></i>
+											<i class="ion ion-md-star text-muted"></i>
+								{% else %}
+								<i class="ion ion-md-star text-success"></i>
+											<i class="ion ion-md-star text-muted"></i>
+											<i class="ion ion-md-star text-muted"></i>
+											<i class="ion ion-md-star text-muted"></i>
+											<i class="ion ion-md-star text-muted"></i>
+{% endif %}
+											<!-- <i class="ion ion-md-star text-success"></i>
+											<i class="ion ion-md-star text-success"></i>
+											<i class="ion ion-md-star text-success"></i>
+											<i class="ion ion-md-star text-success"></i>
+											<i class="ion ion-md-star text-muted"></i> -->
+										</div>
+										<div class="popular-services__icon">
+											<img src="" width='40' height="40" alt="">
+										</div>
+									</div>
+									<div class="card-body">
+										<div class="popular-section__text d-flex flex-column justify-content-center">
+											<h3>{{ card.company }}</h3>
+											<p class="mb-2">{% recursetree card.rubricator.get_ancestors %} {{ node.name }} {{ children }} 
+											{% endrecursetree %} {{ card.rubricator }}</p>
+											<div class="d-flex align-items-end justify-content-between">
+												<div>
+													<p>Заказов: {{ card.rubricator.order_set.count }}</p>
+													<p>Регион: {{ card.get_reg_display }}</p>
+												</div>
+												<p class="big-text">от {{ card.cost_size }} ₽/М2</p>
+											</div>
+										</div>
+									</div>
+								</a>
+							</div>
+							{% endfor %} 
+							{% endfor %} 
+						<!-- 	<div class="col-12 col-md-6 col-lg-4 col-xl-3">
+								<a href='#' class="card popular-services__card mb-2">
+									<div class="popular-services__img">
+										<img src="assets/img/pop-services-1.png" alt="">
+										<div class="popular-services__stars card-stars">
+											<i class="ion ion-md-star text-success"></i>
+											<i class="ion ion-md-star text-success"></i>
+											<i class="ion ion-md-star text-success"></i>
+											<i class="ion ion-md-star text-success"></i>
+											<i class="ion ion-md-star text-muted"></i>
+										</div>
+										<div class="popular-services__icon">
+											<img src="assets/img/pop-services-icon.png" width='40' height="40" alt="">
+										</div>
+									</div>
+									<div class="card-body">
+										<div class="popular-section__text d-flex flex-column justify-content-center">
+											<h3>Квадрим</h3>
+											<p class="mb-2">Ремонт по одной комнате</p>
+											<div class="d-flex align-items-end justify-content-between">
+												<div>
+													<p>Заказов: 12</p>
+													<p>Регион: Москва</p>
+												</div>
+												<p class="big-text">от 5 000 ₽/М2</p>
+											</div>
+										</div>
+									</div>
+								</a>
+							</div>
+							<div class="col-12 col-md-6 col-lg-4 col-xl-3">
+								<a href='#' class="card popular-services__card mb-2">
+									<div class="popular-services__img">
+										<img src="assets/img/pop-services-1.png" alt="">
+										<div class="popular-services__stars card-stars">
+											<i class="ion ion-md-star text-success"></i>
+											<i class="ion ion-md-star text-success"></i>
+											<i class="ion ion-md-star text-success"></i>
+											<i class="ion ion-md-star text-success"></i>
+											<i class="ion ion-md-star text-muted"></i>
+										</div>
+										<div class="popular-services__icon">
+											<img src="assets/img/pop-services-icon.png" width='40' height="40" alt="">
+										</div>
+									</div>
+									<div class="card-body">
+										<div class="popular-section__text d-flex flex-column justify-content-center">
+											<h3>Квадрим</h3>
+											<p class="mb-2">Ремонт по одной комнате</p>
+											<div class="d-flex align-items-end justify-content-between">
+												<div>
+													<p>Заказов: 12</p>
+													<p>Регион: Москва</p>
+												</div>
+												<p class="big-text">от 5 000 ₽/М2</p>
+											</div>
+										</div>
+									</div>
+								</a>
+							</div>
+							<div class="col-12 col-md-6 col-lg-4 col-xl-3">
+								<a href='#' class="card popular-services__card mb-2">
+									<div class="popular-services__img">
+										<img src="assets/img/pop-services-1.png" alt="">
+										<div class="popular-services__stars card-stars">
+											<i class="ion ion-md-star text-success"></i>
+											<i class="ion ion-md-star text-success"></i>
+											<i class="ion ion-md-star text-success"></i>
+											<i class="ion ion-md-star text-success"></i>
+											<i class="ion ion-md-star text-muted"></i>
+										</div>
+										<div class="popular-services__icon">
+											<img src="assets/img/pop-services-icon.png" width='40' height="40" alt="">
+										</div>
+									</div>
+									<div class="card-body">
+										<div class="popular-section__text d-flex flex-column justify-content-center">
+											<h3>Квадрим</h3>
+											<p class="mb-2">Ремонт по одной комнате</p>
+											<div class="d-flex align-items-end justify-content-between">
+												<div>
+													<p>Заказов: 12</p>
+													<p>Регион: Москва</p>
+												</div>
+												<p class="big-text">от 5 000 ₽/М2</p>
+											</div>
+										</div>
+									</div>
+								</a>
+							</div> -->
+						</div>
+					</div>
+
+					<div class="pagination py-3">
+						<a href="#" class="btn btn-outline-success">Назад</a>
+						<a href="#" class="btn btn-outline-secondary">1</a>
+						<a href="#" class="btn btn-outline-secondary">2</a>
+						<a href="#" class="btn btn-outline-secondary">3</a>
+					</div>
+				 
+{% endblock %}

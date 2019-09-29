@@ -1,0 +1,666 @@
+{% extends "imp_base.html" %}
+{% load static %}
+{% load mptt_tags %}
+
+ {% block script %}
+	
+	<!-- Libs -->
+	<link rel="stylesheet" href="{% static "assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" %}">
+	<link rel="stylesheet" href="{% static "assets/vendor/libs/typeahead-js/typeahead.css" %}">
+	<!-- Page -->
+
+  {% endblock %}
+
+
+{% block content %}
+			<!-- Layout content -->
+			<div class="layout-content catalog-card">
+				{% if rubricator.img %}<div class="catalog-hero" style="background-image: url('{{ rubricator.img.url }}')">{% else %}<div class="catalog-hero">{% endif %}
+					<div class="container flex-grow-1">
+						<div class="row">
+							<div class="col-lg-8">
+								<div class="hero-title">{% recursetree rubricator.get_ancestors %} {{ node.name }} {{ children }} 
+											{% endrecursetree %} {{ rubricator }} </div>
+								<ol class="breadcrumb">
+									<li class="breadcrumb-item"><a href="javascript:void(0)">Главная</a></li>
+									{% recursetree rubricator.get_ancestors %}<li class="breadcrumb-item"><a href="javascript:void(0)">{{ node.name }}</a></li> {{ children }}
+											{% endrecursetree %} 
+											<li class="breadcrumb-item"><a href="javascript:void(0)"> {{ rubricator }}</a></li>
+									
+									<!-- <li class="breadcrumb-item"><a href="javascript:void(0)">Ремонт</a></li>
+									<li class="breadcrumb-item"><a href="javascript:void(0)">Ванная</a></li> -->
+									<li class="breadcrumb-item">{% recursetree rubricator.get_ancestors %} {{ node.name }} {{ children }} 
+											{% endrecursetree %} {{ rubricator }}  {{ card.company.name }}</li>
+								</ol>
+								<div class="hero-description">
+									{{ rubricator.get_root.descrip }}
+								</div>
+								<div class="hero-buttons">
+									<div class="btn btn-outline-white">Посмотреть фото</div>
+									<div class="btn btn-outline-white">Поделиться</div>
+								</div>
+							</div>
+							<div class="col-lg-4">
+								<div class="h-100 d-flex align-items-center">
+									<div class="hero-form">
+										<div class="form-group">
+											<div class="ui-stars text-success">
+												{% if card.rating == 5 %} 
+								<div class="ui-star filled">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star filled">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star filled">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star filled">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star filled">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+								{% elif card.rating == 4 %}
+												<div class="ui-star filled">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star filled">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star filled">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star filled">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+								{% elif card.rating == 3 %}
+												<div class="ui-star filled">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star filled">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star filled">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+								{% elif card.rating == 2 %}
+								<div class="ui-star filled">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star filled">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+								{% else %}
+												<div class="ui-star filled">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+{% endif %}
+											</div>
+											<span class="text-muted small">Заказов: {{ card.rubricator.order_set.count }}</span>
+										</div>
+										<div class="form-group">
+											<div class="text-muted small">Стоимость:</div>
+											<div class="cost">{{ card.cost_size }} ₽/М<sup>2</sup></div>
+										</div>
+										<form method="post" action="">
+											{% csrf_token %} 
+										<div class="form-group">
+											{{ form.size }}
+											<!-- <input type="text" class="form-control" placeholder="Количество метров"> -->
+										</div>
+										
+										<div class="form-group">
+											<div class="text-muted small">Итого:</div>
+											<div class="summary">~ 34 900 ₽</div>
+										</div>
+										<div class="form-group">
+											<a href="javascript:void(0)" class="small text-success">Почему указана примерная сумма?</a>
+										</div>
+										<button type="submit" class="btn btn-success w-100">Заказать</button></form>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+				<!-- Content -->
+				<div class="container flex-grow-1 container-p-y">
+					<div class="row">
+						<div class="col-lg-8">
+							<div class="card-subtitle">Описание</div>
+							<div class="row">
+								<div class="col-md-6">
+									<div class="text-muted small pb-2">Услуга:</div>
+									<p>
+										Размещена: {{ card.date_create }}
+										<br>Заказана раз: {{ card.rubricator.order_set.count }}
+										<br>Отзывов: {{ card.feedback_set.count }}
+									</p>
+								</div>
+								<div class="col-md-6">
+									<div class="text-muted small pb-2">Исполнитель:</div>
+									<div class="media align-items-center">
+										<div class="circle-logo-wrap">
+											<img src="{{ card.company.avatar.url }}" alt="">
+										</div>
+										<div class="media-body pl-3">
+											<div class="company-title">{{ card.company.name }}</div>
+											<div class="text-muted small">Строительная компания</div>
+											<div class="ui-stars text-success">
+												{% if card.company.rating == 5 %} 
+								<div class="ui-star filled">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star filled">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star filled">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star filled">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star filled">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+								{% elif card.company.rating == 4 %}
+												<div class="ui-star filled">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star filled">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star filled">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star filled">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+								{% elif card.company.rating == 3 %}
+												<div class="ui-star filled">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star filled">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star filled">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+								{% elif card.company.rating == 2 %}
+								<div class="ui-star filled">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star filled">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+								{% else %}
+												<div class="ui-star filled">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+{% endif %}
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<p class="pt-4"> {{ card.descrip }}
+								<br><span class="read-more">Все описание</span></p>
+							<div class="card-subtitle">Характеристики</div>
+							<div class="row">
+								<div class="col-md-6 py-3"><i class="ion ion-md-checkbox-outline"></i><span class="pl-3">Материалы включены в стоимость</span></div>
+								<div class="col-md-6 py-3"><i class="far fa-calendar-alt"></i><span class="pl-3">Ремонт занимает не более 7 дней</span></div>
+								<div class="col-md-6 py-3"><i class="ion ion-md-checkbox-outline"></i><span class="pl-3">Материалы включены в стоимость</span></div>
+								<div class="col-md-6 py-3"><i class="far fa-calendar-alt"></i><span class="pl-3">Ремонт занимает не более 7 дней</span></div>
+							</div>
+							<div class="card-subtitle">Смета</div>
+							<p>В смете отражены все основные работы, строительные и отделочные материалы (из расчета на один квадратный, погонный или кубический метр или из расчета одного здания). </p>
+							<div class="row small">
+								<div class="col-md-6 py-2">Демонтажные работы с применением перфоратора или ударной дрели.</div>
+								<div class="col-md-6 py-2">1 ед.</div>
+								<div class="col-md-6 py-2">Выравнивание стен при помощи гипсовой штукатурки с толщиной слоя не менее 2 см
+								</div>
+								<div class="col-md-6 py-2">1 м<sup>2</sup></div>
+								<div class="col-md-6 py-2">Акриловая ванна российского производства. Установочный комплект в подарок.</div>
+								<div class="col-md-6 py-2">Не менее 1 ед.</div>
+							</div>
+							<div class="read-more py-2">Вся смета</div>
+							<div class="card-subtitle">Дополнительные опции ₽</div>
+							<p>Дополнительные опции содержат все работы, услуги, строительные и отделочные материалы, которые вы можете заказать в данном проекте.</p>
+							<div class="row small">
+								<div class="col-md-6 py-2">Доставка материалов, заказанных сверх основной сметы из дополнительных опций.
+								</div>
+								<div class="col-md-6 py-2">3 000 ₽</div>
+								<div class="col-md-6 py-2">Выравнивание стен при помощи гипсовой штукатурки с толщиной слоя не менее 2 см
+								</div>
+								<div class="col-md-6 py-2">от 4 500 ₽</div>
+								<div class="col-md-6 py-2">Разводка водопроводной сети за одну точку. Пластиковые трубы российского
+									производства.
+								</div>
+								<div class="col-md-6 py-2">от 900 ₽</div>
+							</div>
+							<div class="read-more py-2">Все опции ₽</div>
+							<div class="card-subtitle">Отзывы - {{ card.feedback_set.count }}</div>
+							<p>Отзывы - лучший показатель надежности компании. Мы формируем отзывы только на основе выполненных заказов совершенных в нашей системе. </p>
+							<div class="py-2">
+								<div class="ui-stars text-success">
+									{% if card.rating == 5 %} 
+								<div class="ui-star filled">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star filled">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star filled">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star filled">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star filled">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+								{% elif card.rating == 4 %}
+												<div class="ui-star filled">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star filled">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star filled">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star filled">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+								{% elif card.rating == 3 %}
+												<div class="ui-star filled">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star filled">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star filled">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+								{% elif card.rating == 2 %}
+								<div class="ui-star filled">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star filled">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+								{% else %}
+												<div class="ui-star filled">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+{% endif %}
+								</div>
+								<span class="text-muted small">Средняя оценка {{ card.rating }} балла</span>
+							</div>
+
+							{% for feedback in card.feedback_set.all %}
+							{% if feedback.user.useraccept.company == card.company %} 
+<div class="review my-4 text-lg-right">
+								<div class="review-body my-4 font-weight-bold">{{ feedback.text }}
+									Макар, спасибо большое за теплые слова. Нам было приятно работать с Вами!
+									<br>Очень приятный заказчик. Вежливый, тактичный и понимающий. Спасибо и всех благ!</div>
+								<div class="media align-items-center flex-lg-row-reverse">
+									{% if feedback.user.useraccept.avatar %}<img src="{{ feedback.user.useraccept.avatar.url }}" alt="" class="ui-w-30 rounded-circle">{% else %}
+									<img src="{% static "assets/img/avatar-placeholder.png" %}" alt="" class="ui-w-30 rounded-circle">   
+									{% endif %}
+									<div class="media-body pr-3">
+										<div class="small">{{ feedback.user.get_full_name }}</div>
+										<div class="small text-muted">{{ feedback.user.useraccept.position }} <span class="text-success">{{ feedback.user.useraccept.company.name }}</span></div>
+									</div>
+								</div>
+							</div>
+							<hr class="my-4">
+							{% else %}
+							<div class="review my-4">
+								<div class="media align-items-center">
+									{% if feedback.user.useraccept.avatar %}<img src="{{ feedback.user.useraccept.avatar.url }}" alt="" class="ui-w-30 rounded-circle">{% else %}
+									<img src="{% static "assets/img/avatar-placeholder.png" %}" alt="" class="ui-w-30 rounded-circle">   
+									{% endif %}
+									
+									<div class="media-body pl-3">
+										<div class="small">{{ feedback.user.first_name }}</div>
+										<div class="small text-muted">{{ feedback.date_create.date }}</div>
+									</div>
+								</div>
+								<div class="review-body my-4">{{ feedback.text }}
+									Мне все понравилось. Были конечно странные моменты с задержкой по поставке материалов. У меня работал Алексей и Иван. Приходили всегда заранее. Делали все качественно. Через три дня уже перестал следить за ними. Очень понравилось то, что ребята убрали за собой, вывезли мусор и даже ... <!-- <span class="read-more">Читать дальше</span> --></div>
+							</div>
+							<hr class="my-4">
+							{% endif %}
+{% endfor %} 
+<!-- 
+							<div class="review my-4">
+								<div class="media align-items-center">
+									<img src="assets/img/avatar-placeholder.png" alt="" class="ui-w-30 rounded-circle">
+									<div class="media-body pl-3">
+										<div class="small">Андрей</div>
+										<div class="small text-muted">Март 2019</div>
+									</div>
+								</div>
+								<div class="review-body mt-4">Очень классно ребята! Спасибо за новую ванную комнату!!! Рекомендую!!!</div>
+								<div class="review-images mt-3">
+									<img src="assets/img/review-1.png" alt="">
+									<img src="assets/img/review-2.png" alt="">
+								</div>
+							</div>
+							<hr class="my-4"> -->
+							<!-- <div class="review my-4 text-lg-right">
+								<div class="review-body my-4 font-weight-bold">
+									Макар, спасибо большое за теплые слова. Нам было приятно работать с Вами!
+									<br>Очень приятный заказчик. Вежливый, тактичный и понимающий. Спасибо и всех благ!</div>
+								<div class="media align-items-center flex-lg-row-reverse">
+									<img src="assets/img/avatar-placeholder.png" alt="" class="ui-w-30 rounded-circle">
+									<div class="media-body pr-3">
+										<div class="small">Андрей Петровченко</div>
+										<div class="small text-muted">Прораб компании <span class="text-success">Квадрим</span></div>
+									</div>
+								</div>
+							</div>
+							<hr class="my-4"> -->
+							<div class="read-more">Все отзывы</div>
+							<div class="card-subtitle">Исполнитель</div>
+
+							<div class="media align-items-center">
+								<div class="circle-logo-wrap">
+									<img src="{{ card.company.avatar.url }}" alt="">
+								</div>
+								<div class="media-body pl-3">
+									<div class="company-title">{{ card.company.name }}</div>
+									<div class="text-muted x-small">Строительная компания, на сайте с {{ card.company.date_create.date }}.</div>
+									<div>
+										<div class="ui-stars text-success">
+											{% if card.company.rating == 5 %} 
+								<div class="ui-star filled">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star filled">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star filled">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star filled">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star filled">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+								{% elif card.company.rating == 4 %}
+												<div class="ui-star filled">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star filled">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star filled">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star filled">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+								{% elif card.company.rating == 3 %}
+												<div class="ui-star filled">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star filled">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star filled">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+								{% elif card.company.rating == 2 %}
+								<div class="ui-star filled">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star filled">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+								{% else %}
+												<div class="ui-star filled">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+{% endif %}
+										</div>
+										<span class="text-muted small">Отзывов: {{ card.company.feedback_set.count }}   Средняя оценка {{ card.company.rating }} балла</span>
+									</div>
+								</div>
+							</div>
+							{% for feedback in card.company.feedback_set.all %}
+
+							<div class="my-4">{{ feedback.text }}
+								Описание квадрим тут. Мне все понравилось. Были конечно странные моменты с задержкой по поставке материалов. У меня работал Алексей и Иван. Приходили всегда заранее. Делали все качественно. Через три дня уже перестал следить за ними. Очень понравилось то, что ребята убрали за собой, вывезли мусор и даже ... <!-- <span class="read-more">Читать дальше</span> -->
+							</div>
+						{% endfor %} 
+						</div>
+					</div>
+
+				 
+{% endblock %}

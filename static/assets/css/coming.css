@@ -1,0 +1,22 @@
+.coming {
+  font-family: Roboto;
+  font-style: normal; }
+  .coming .bg-green {
+    background-color: #00CC66; }
+  .coming .title {
+    font-weight: 900;
+    font-size: 78px;
+    line-height: 82px;
+    letter-spacing: -0.02em; }
+  .coming .description {
+    font-size: 22px;
+    line-height: 31px;
+    letter-spacing: -0.02em; }
+  .coming .copyright {
+    margin-top: 70px; }
+    .coming .copyright .small {
+      font-weight: 300;
+      font-size: 9px;
+      line-height: 13px; }
+
+/*# sourceMappingURL=coming.css.map */

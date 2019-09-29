@@ -1,0 +1,138 @@
+{% extends "imp_base.html" %}
+{% load static %}
+{% load mptt_tags %}
+ {% block script %}
+	<!-- Libs -->
+    <link rel="stylesheet" href="{% static "assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" %}">
+
+
+  {% endblock %}
+
+
+{% block content %}
+	
+
+
+			<!-- Layout content -->
+			<div class="layout-content">
+
+				<!-- Content -->
+				<div class="container flex-grow-1 container-p-y orders-list">
+
+					<h4 class="font-weight-light py-3 mb-4">
+						<span class="text-muted">Blank /</span> Заказы
+					</h4>
+					<div class="py-3 d-flex justify-content-between">
+						<h4 class="font-weight-bold">
+							Список Заказов
+						</h4>
+						<!-- <a href="#" class="btn btn-success">Добавить</a> -->
+					</div>
+
+					<hr class="border-light container-m--x mt-0 mb-4">
+					<div class="row justify-content-center flex-wrap">
+						{% for order in orders %}
+						<div class="col-md-6 col-xl-4">
+							<div class="orders-list__card card  mx-auto mb-4">
+
+								<!-- Кратинка -->
+								<div class="orders-list__card-img" style="background-image: url('{% static "assets/img/catalog/rem.jpg" %}')"></div>
+								<!-- <a href="#"><img src="" alt="" class="d-block ui-w-40 rounded-circle orders-list__card-icon-home"></a> -->
+								<div class="orders-list__card-stars">{% if order.rating == 5 %} 
+								<i class="ion ion-md-star text-success"></i>
+								<i class="ion ion-md-star text-success"></i>
+								<i class="ion ion-md-star text-success"></i>
+								<i class="ion ion-md-star text-success"></i>
+								<i class="ion ion-md-star text-success"></i>
+								{% elif order.rating == 4 %}
+								<i class="ion ion-md-star text-success"></i>
+								<i class="ion ion-md-star text-success"></i>
+								<i class="ion ion-md-star text-success"></i>
+								<i class="ion ion-md-star text-success"></i>
+								{% elif order.rating == 3 %}
+								<i class="ion ion-md-star text-success"></i>
+								<i class="ion ion-md-star text-success"></i>
+								<i class="ion ion-md-star text-success"></i>
+								{% elif order.rating == 2 %}
+								<i class="ion ion-md-star text-success"></i>
+								<i class="ion ion-md-star text-success"></i>
+								{% else %}
+								<i class="ion ion-md-star text-success"></i>
+{% endif %}
+									
+								</div>
+								<!-- Текст -->
+								<div class="card-body pb-3 pt-3">
+										
+				{% if order.status == 7 %} 
+										<span class="badge badge-default">Ожидает оплаты</span>
+				{% elif order.status == 6 %}
+										<span class="badge badge-info">Идут работы</span>
+				{% elif order.status == 5 %}
+										<span class="badge badge-dark">Гарантия</span>
+				{% elif order.status == 4 %}
+										<span class="badge badge-danger">Просрочен</span>
+				{% elif order.status == 3 %}
+										<span class="badge badge-danger">Брак</span>
+				{% elif order.status == 2 %}
+										<span class="badge badge-warning">Проблемы</span>
+						{% else %}
+										<span class="badge badge-success">Завершено</span>
+{% endif %}
+										<div class="text-muted small mt-1 font-weight-light">Всего задач: 12, решено: 6</div>
+								</div>
+
+								<!-- Прогресс бар -->
+								<div class="progress rounded-0" style="height: 3px;">
+									<div class="progress-bar" style="width: 33%;"></div>
+								</div>
+<!--								<div class="card-body small pt-2 pb-0">
+									<strong>33%</strong> completed
+								</div>-->
+
+								<!-- Текст -->
+								<div class="card-body pb-3 pt-3">
+									<div class="mb-3">
+										<h4 class="card-title">ID: {{ order.id }}</h4>
+										<p class="card-text text-muted">{% recursetree order.appeal.rubricator.get_ancestors %} {{ node.name }} {{ children }} 
+											{% endrecursetree %} {{ order.appeal.rubricator }}</p>
+									</div>
+									<div class="mb-3">
+{% for user in order.company.useraccept_set.all %}	
+									 <a href="javascript:void(0)" class=" card-text text-muted mb-1 d-flex flex-row align-items-center">
+											<span class="d-flex flex-lg-row align-items-center align-middle">
+												<img src="{{ user.avatar.url }}" alt="" class="d-block ui-w-20 rounded-circle">
+												<span class="px-1 ml-2 ml-lg-0 card-text text-muted">{{ user.user.get_full_name }} 
+												{% if user.position %} ({{ user.position }}){% else %}{% endif %}</span>
+											</span>
+										</a>
+{% endfor %} 
+										
+
+									</div>
+									<div class="mb-3">
+										<p class=" card-text text-muted">Начало работ: {{ order.date_start }}
+										</p>
+										<p class=" card-text text-muted">Завершение работ: {{ order.date_end }} </p>
+									</div>
+									<div class="mb-3">
+										<p class="orders-list__card-price card-text big-text">{{ order.cost }} ₽</p>
+										<p class="card-text">Оплачено: {{ order.paid }} ₽</p>
+									</div>
+									<div>
+										<a href="{% url 'order_info' order.id %}" class="btn btn-success">Подробнее</a>
+									</div>
+
+
+								</div>
+							</div>
+						</div>
+						{% endfor %}
+
+					</div>
+
+ 
+
+
+
+{% endblock %}

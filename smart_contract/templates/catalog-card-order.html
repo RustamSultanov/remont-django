@@ -1,0 +1,666 @@
+{% extends "imp_base.html" %}
+{% load static %}
+{% load mptt_tags %}
+{% block core %}
+    <link rel="stylesheet" href="{% static "assets/vendor/css/rtl/bootstrap-material.css" %}" class="theme-settings-bootstrap-css">
+    <link rel="stylesheet" href="{% static "assets/vendor/libs/smartwizard/smartwizard.css" %}">
+    <link rel="stylesheet" href="{% static "assets/vendor/css/rtl/appwork-material.css" %}" class="theme-settings-appwork-css">
+    <link rel="stylesheet" href="{% static "assets/vendor/css/rtl/theme-corporate-material.css" %}" class="theme-settings-theme-css">
+    <link rel="stylesheet" href="{% static "assets/vendor/css/rtl/colors-material.css" %}" class="theme-settings-colors-css">
+    <link rel="stylesheet" href="{% static "assets/vendor/css/rtl/uikit.css" %}">
+    <link rel="stylesheet" href="{% static "assets/vendor/css/pages/chat.css" %}">
+	<link rel="stylesheet" href="{% static "assets/vendor/css/pages/projects.css" %}">
+    <link rel="stylesheet" href="{% static "assets/css/custom.css" %}">
+     <link rel="stylesheet" href="{% static "assets/css/landing.css" %}">
+{% endblock %}
+ {% block script %}
+	
+
+	<script src="{% static "assets/vendor/libs/smartwizard/smartwizard.js" %}"></script>
+	<script src="{% static "assets/js/order.js" %}"></script>
+
+	<!-- Libs -->
+	<link rel="stylesheet" href="{% static "assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" %}">
+	<link rel="stylesheet" href="{% static "assets/vendor/libs/typeahead-js/typeahead.css" %}">
+	<!-- Page -->
+
+  {% endblock %}
+
+
+{% block content %}
+
+			<!-- Layout content -->
+			<div class="layout-content catalog-card-order">
+				<div class="order-hero" >
+					<div class="container flex-grow-1">
+						<div class="row">
+							<div class="col-lg-8">
+								<div class="order-hero-title">Заказ # {{ order.id }}</div>
+								<ol class="breadcrumb">
+									<li class="breadcrumb-item"><a href="javascript:void(0)">Главная</a></li>
+									<li class="breadcrumb-item"><a href="{% url 'employee_info' request.user.id %}">Личный кабинет</a></li>
+									<li class="breadcrumb-item"><a href="{% url 'order_list' %}">Заказы</a></li>
+									<li class="breadcrumb-item">Заказ {{ order.id }}</li>
+								</ol>
+								<div class="small text-muted">Статус заказа:</div>
+								<div>
+									<span class="order-status status-progress">{{ order.get_status_display }}</span>
+									<span class="status-description">Индикатор статуса показывает на каком этапе находится выполнение вашего заказа.</span>
+								</div>
+								<div class="row pb-6">
+									<div class="col-md-6">
+										<div class="small text-muted my-2">Адрес:</div>
+										<table class="table table-borderless table-xs">
+											<tbody>
+												<tr>
+													<td>Город</td>
+													<td>{{ order.adress.city }}</td>
+												</tr>
+												<tr>
+													<td>Улица</td>
+													<td>{{ order.adress.street }}</td>
+												</tr>
+												<tr>
+													<td>Дом</td>
+													<td>{{ order.adress.build }}</td>
+												</tr>
+												<tr>
+													<td>Квартира</td>
+													<td>{{ order.adress.flat }}</td>
+												</tr>
+												<tr>
+													<td>Телефон</td>
+													<td>{{ order.appeal.user.useraccept.phone_number }}</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+									<div class="col-md-6">
+										<div class="small text-muted my-2">Исполнитель:</div>
+										<table class="table table-borderless table-xs">
+											<tbody>
+												<tr>
+													<td>Название</td>
+													<td>{{ order.company.name }}</td>
+												</tr>
+												<tr>
+													<td>Юридическое лицо</td>
+													<td>{{ order.company }}</td>
+												</tr>
+												<tr>
+													<td>ОГРН / ИНН</td>
+													<td>{{ order.company.ogrn }} / {{ order.company.inn }}</td>
+												</tr>
+												<tr>
+													<td>Сайт</td>
+													<td>{{ order.company.site }}</td>
+												</tr>
+												<tr>
+													<td>Телефон</td>
+													<td>{{ order.company.phone_number }}</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+							<div class="col-lg-4">
+								<div class="h-100 d-flex align-items-center">
+									<div class="hero-form">
+										<div class="form-group">
+											<div class="ui-stars text-success">
+												{% if order.rating == 5 %} 
+								<div class="ui-star filled">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star filled">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star filled">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star filled">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star filled">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+								{% elif order.rating == 4 %}
+												<div class="ui-star filled">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star filled">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star filled">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star filled">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+								{% elif order.rating == 3 %}
+												<div class="ui-star filled">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star filled">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star filled">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+								{% elif order.rating == 2 %}
+								<div class="ui-star filled">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star filled">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+								{% else %}
+												<div class="ui-star filled">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+												<div class="ui-star">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div>
+{% endif %}
+												
+												<!-- <div class="ui-star half-filled">
+													<i class="ion ion-md-star"></i>
+													<i class="ion ion-md-star"></i>
+												</div> -->
+												
+											</div>
+											<span class="text-muted small">Заказов: {{ order.rubricator.order_set.count }}</span>
+										</div>
+										<div class="form-group">
+											<div class="text-muted small">Услуга:</div>
+											<div class="cost">{% recursetree rubricator %} {{ node.name }} {{ children }} 
+											{% endrecursetree %}</div>
+										</div>
+										<div class="form-group">
+											<div class="text-muted small">Итого:</div>
+											<div class="summary">{{ order.cost }} ₽</div>
+										</div>
+										<div class="form-group">
+											<a href="javascript:void(0)" class="small text-success">Что такое защита платежей?</a>
+										</div>
+										<div class="btn btn-success w-100">Оплатить</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+				<!-- Content -->
+				<div class="flex-grow-1 bg-white">
+					<div class="container container-p-y">
+						<div class="row">
+							<div class="col-lg-8">
+								<div class="card-order-tabs nav-tabs-top nav-responsive-md">
+									<ul class="nav nav-tabs">
+										<li class="nav-item">
+											<a href="#tab-chat" data-toggle="tab" class="nav-link active show">Чат</a>
+										</li>
+										<!-- <li class="nav-item">
+											<a href="#tab-milestones" data-toggle="tab" class="nav-link">Этапы</a>
+										</li> -->
+										<li class="nav-item">
+											<a href="#tab-docs" data-toggle="tab" class="nav-link">Смета и документы</a>
+										</li>
+										<li class="nav-item">
+											<a href="#tab-address" data-toggle="tab" class="nav-link">Адрес</a>
+										</li>
+										<li class="nav-item">
+											<a href="#tab-guarantee" data-toggle="tab" class="nav-link">Гарантия</a>
+										</li>
+									</ul>
+								</div>
+								<hr class="my-4">
+								<div class="tab-content">
+									<div class="tab-pane fade show active" id="tab-chat">
+										<div class="chat-messages">
+											<div class="chat-message-right mb-4">
+												<div>
+													<div class="media align-items-center ml-3">
+			
+														<div class="media-body pl-3">
+															<div class="small text-muted">Чат-бот</div>
+															<div class="x-small text-muted">Штатный чат-бот сервиса <br>РемонтСделан.РФ</div>
+														</div>
+													</div>
+												</div>
+												<div class="chat-message-body">
+													<div class="chat-message-date">{{ order.date_create }}</div>
+													Добрый день!
+													<br><br>
+													{{ order.appeal.user.first_name }}, вы создали заказ № {{ order.id }}. Я чат-бот сервиса РемонтСделан.РФ, который будет помогать вам в работе с заказом.
+													<br><br>
+													Пожалуйста, укажите адрес выполнения вашего заказа и нажмите кнопку “Сохранить”.
+												</div>
+											</div>
+											{% for messege in messeges %}
+ 
+														{% if messege.user == request.user %}
+																<div class="chat-message-left mb-4">
+												<div>
+													<div class="media align-items-center mr-3">
+														
+														<div class="media-body pl-3">
+															<div class="small text-muted">{{ request.user.get_full_name }}</div>
+														</div>
+													</div>
+												</div>
+												<div class="chat-message-body">
+													<div class="chat-message-date">{{ messege.date_create }}</div>
+													{{ messege.text }}
+												</div>
+											</div>
+	{% else %}
+	<div class="chat-message-right mb-4">
+												<div>
+													<div class="media align-items-center mr-3">
+														
+														<div class="media-body pl-3">
+															<div class="small text-muted">Чат-бот</div>
+														</div>
+													</div>
+												</div>
+												<div class="chat-message-body">
+													<div class="chat-message-date">{{ messege.date_create }}</div>
+													{{ messege.text }}
+												</div>
+											</div>
+
+{% endif %}
+{% endfor %} 
+											
+										</div>
+										<hr class="m-0">
+										<div class="flex-grow-0 py-3 px-4">
+											<form action="" method="post">
+											<div class="input-group">
+												{% csrf_token %} 
+
+												 {{ form.text }}
+												<div class="input-group-append">
+													<button type="submit" class="btn btn-success">Отправить</button>
+												</div>
+											</div>
+										</form>
+										</div>
+									</div>
+									<!-- 	<div class="tab-pane fade" id="tab-milestones">
+										<div id="smartwizard" class="sw-main sw-theme-default">
+											<ul class="nav nav-tabs step-anchor">
+												{% for stage in order.stage_set.all reversed %}
+												{% if forloop.counter == 1 %}
+												{% if stage.accept == True %}
+												<li class="nav-item done">
+													<a href="#milestone-step-{{ forloop.counter }}" data-toggle="tab" class="mb-3 active show">
+														<span class="sw-done-icon ion ion-md-checkmark"></span>
+														<span class="sw-number">{{ forloop.counter }}</span>
+														<div class="text-muted small">ЭТАП {{ forloop.counter }}</div>
+														{% recursetree rubricator %} {{ node.name }} {{ children }} 
+											{% endrecursetree %}
+														<br>{{ stage.cost }} ₽
+													</a>
+												</li>
+{% else %}
+<li  class="nav-item">
+													<a href="#milestone-step-{{ forloop.counter }}" data-toggle="tab" class="mb-3 active show">
+														<span class="sw-done-icon ion ion-md-checkmark"></span>
+														<span class="sw-number">{{ forloop.counter }}</span>
+														<div class="text-muted small">ЭТАП {{ forloop.counter }}</div>
+														{% recursetree rubricator %} {{ node.name }} {{ children }} 
+											{% endrecursetree %}
+														<br>{{ stage.cost }} ₽
+													</a>
+												</li>
+{% endif %}
+{% else %}
+{% if stage.accept == True %}
+												<li class="nav-item done">
+													<a href="#milestone-step-{{ forloop.counter }}" data-toggle="tab" class="mb-3">
+														<span class="sw-done-icon ion ion-md-checkmark"></span>
+														<span class="sw-number">{{ forloop.counter }}</span>
+														<div class="text-muted small">ЭТАП {{ forloop.counter }}</div>
+														{% recursetree rubricator %} {{ node.name }} {{ children }} 
+											{% endrecursetree %}
+														<br>{{ stage.cost }} ₽
+													</a>
+												</li>
+{% else %}
+<li  class="nav-item">
+													<a href="#milestone-step-{{ forloop.counter }}" data-toggle="tab" class="mb-3">
+														<span class="sw-done-icon ion ion-md-checkmark"></span>
+														<span class="sw-number">{{ forloop.counter }}</span>
+														<div class="text-muted small">ЭТАП {{ forloop.counter }}</div>
+														{% recursetree rubricator %} {{ node.name }} {{ children }} 
+											{% endrecursetree %}
+														<br>{{ stage.cost }} ₽
+													</a>
+												</li>
+{% endif %}
+{% endif %}
+
+
+{% endfor %}
+												
+											</ul>
+										<div class="mb-3 tab-content">
+												{% for stage in order.stage_set.all reversed %}
+												{% if forloop.counter == 1 %}
+												{% if stage.accept == True %}
+												<div id="milestone-step-{{ forloop.counter }}" class="tab-pane fadeIn show active">
+													<div class="card-body">
+														<div class="description">
+															Описание этапа {{ forloop.counter }}
+															<br> {{ stage.descrip }}
+														</div>
+													</div>
+												</div>
+												{% else %}
+												{% if stage.reason %}
+												<div id="milestone-step-{{ forloop.counter }}" class="tab-pane fadeIn show active"">
+													<div class="card-body">
+														<div class="description">
+															Описание этапа {{ forloop.counter }} - Произведен отказ по причине {{ stage.reason }}
+															<br> {{ stage.descrip }}
+														</div>
+													</div>
+												</div>
+												{% else %}
+												<div id="milestone-step-{{ forloop.counter }}" class="tab-pane fadeIn show active"">
+													<div class="card-body">
+														<div class="description">
+															Описание этапа {{ forloop.counter }}
+															<br> {{ stage.descrip }}
+														</div>
+														<div class="my-4">
+															<button class="btn btn-danger" data-toggle="modal" data-target="#modal-reason{{ forloop.counter }}">Отказ</button>
+															<a href="{% url 'stage_accept' order.id stage.id  %}"><button class="btn btn-success">Принять</button></a>
+														</div>
+													</div>
+												</div>
+												{% endif %}
+												{% endif %}
+												{% else %}
+												{% if stage.accept == True %}
+												<div id="milestone-step-{{ forloop.counter }}" class="tab-pane fadeIn">
+													<div class="card-body">
+														<div class="description">
+															Описание этапа {{ forloop.counter }}
+															<br> {{ stage.descrip }}
+														</div>
+													</div>
+												</div>
+												{% else %}
+												{% if stage.reason %}
+												<div id="milestone-step-{{ forloop.counter }}" class="tab-pane fadeIn">
+													<div class="card-body">
+														<div class="description">
+															Описание этапа {{ forloop.counter }} - Произведен отказ по причине {{ stage.reason }}
+															<br> {{ stage.descrip }}
+														</div>
+													</div>
+												</div>
+												{% else %}
+												<div id="milestone-step-{{ forloop.counter }}" class="tab-pane fadeIn">
+													<div class="card-body">
+														<div class="description">
+															Описание этапа {{ forloop.counter }}
+															<br> {{ stage.descrip }}
+														</div>
+														<div class="my-4">
+															<button class="btn btn-danger" data-toggle="modal" data-target="#modal-reason{{ forloop.counter }}">Отказ</button>
+															<a href="{% url 'stage_accept' order.id stage.id  %}"><button class="btn btn-success">Принять</button></a>
+														</div>
+													</div>
+												</div>
+												{% endif %}
+												{% endif %}
+												{% endif %}
+{% endfor %}
+
+
+												<form method="post">
+													{% csrf_token %}
+												{{ formset.management_form }}
+												{% for forms in formset %}
+        {{ forms.id }}	
+												
+
+												
+												<div class="modal fade" id="modal-reason{{ forloop.counter }}">
+													<div class="modal-dialog modal-sm">
+														<div class="modal-content" >
+															
+															
+															 
+
+												
+															<div class="modal-header">
+																<h5 class="modal-title">
+																	Причина отказа
+																</h5>
+																<button type="button" class="close" data-dismiss="modal" aria-label="Close">×</button>
+															</div>
+															<div class="modal-body">
+																<div class="form-row">
+																	<div class="form-group col">
+																		{{ forms.reason }}
+																	</div>
+																</div>
+															</div>
+															<div class="modal-footer">
+																<button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
+																<button type="submit" class="btn btn-danger">Отказ</button>
+															</div>
+															
+														</div>
+													</div>
+												</div>
+												
+															{% endfor %}
+
+												</form>
+											</div>
+										</div>
+									</div> -->
+									<div class="tab-pane fade" id="tab-docs">
+										<p>В смете отражены все основные работы, строительные и отделочные материалы (из расчета на один квадратный, погонный или кубический метр или из расчета одного здания). </p>
+										<!-- <div class="row small">
+											<div class="col-md-6 py-2">Демонтажные работы с применением перфоратора или ударной дрели.</div>
+											<div class="col-md-6 py-2">1 ед.</div>
+											<div class="col-md-6 py-2">Выравнивание стен при помощи гипсовой штукатурки с толщиной слоя не менее 2 см
+											</div>
+											<div class="col-md-6 py-2">1 м<sup>2</sup></div>
+											<div class="col-md-6 py-2">Акриловая ванна российского производства. Установочный комплект в подарок.</div>
+											<div class="col-md-6 py-2">Не менее 1 ед.</div>
+										</div> -->
+										<div class="read-more py-2">Вся смета</div>
+										<form action="" method="post" enctype="multipart/form-data">
+											{% csrf_token %}
+											<div class="input-group my-3">
+												<div class="form-group">
+
+													{{ form_estimate.files }}
+													</div>
+												<span class="input-group-append">
+													<button type="submit" class="btn btn-success">Загрузить</button>
+												</span>
+											</div>
+										</form>
+										<div class="row no-gutters">
+										{% for estimate in order.estimate_set.all %}
+											<div class="col-md-6 col-lg-12 col-xl-6 p-1">
+												<div class="project-attachment ui-bordered p-2">
+													<div class="project-attachment-file display-4">
+														<i class="far fa-file"></i>
+													</div>
+													<div class="media-body ml-3">
+														<strong class="project-attachment-filename">{{ estimate.files.name }}</strong>
+														<div class="text-muted small">{{ estimate.files.size|filesizeformat }}</div>
+														<div>
+															<a href="{{ estimate.files.url }}">Скачать</a>
+															<a href="{% url 'delete_estimate' order.id estimate.id  %}" class="text-danger">Удалить</a>
+														</div>
+													</div>
+												</div>
+											</div>
+											{% endfor %} 
+											{% if order.estimate_set.all %}
+										<div class="my-4">
+											<button class="btn btn-danger" data-toggle="modal" data-target="#modal-quote-reason">Отказ</button>
+											<a href="{% url 'estimate_accept' order.id order.estimate_set.all.first.id %}"><button class="btn btn-success">Принять</button></a>
+										</div>
+										<div class="modal fade" id="modal-quote-reason">
+											<div class="modal-dialog modal-sm">
+												<form class="modal-content" action="" method="post">
+													{% csrf_token %}
+													<div class="modal-header">
+														<h5 class="modal-title">
+															Причина отказа
+														</h5>
+														<button type="button" class="close" data-dismiss="modal" aria-label="Close">×</button>
+													</div>
+													<div class="modal-body">
+														<div class="form-row">
+															<div class="form-group col"> 
+																{{ form_estimate_failure.reason }}
+															</div>
+														</div>
+													</div>
+													<div class="modal-footer">
+														<button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
+														<button type="submit" class="btn btn-danger">Отказ</button>
+													</div>
+												</form>
+												</div>
+											</div>
+											{% else %}
+{% endif %}
+										</div>
+									</div>
+									<div class="tab-pane fade" id="tab-address">
+										<form action="" method="post">
+											{% csrf_token %} 
+
+												 
+											<div class="form-group">
+												{{ form_adress.city }}
+											</div>
+											<div class="form-group">
+												{{ form_adress.street }}
+											</div>
+											<div class="form-row">
+												<div class="form-group col-md-6">
+													{{ form_adress.build }}
+												</div>
+												<div class="form-group col-md-6">
+													{{ form_adress.flat }}
+												</div>
+											</div>
+											<div class="form-group">
+												{{ form_adress.domofone }}
+											</div>
+											<div class="form-group">
+												{{ form_adress.comment }}
+											</div>
+											<div class="form-group right">
+												<button type="submit" class="btn btn-success">Сохранить</button>
+											</div>
+										</form>
+									</div>
+									<div class="tab-pane fade" id="tab-guarantee">
+										<form action="" method="post" enctype="multipart/form-data">
+											{% csrf_token %} 
+											<div class="form-group">
+												{{ form_guaranty.name }}
+											</div>
+											<div class="form-group">
+												{{ form_guaranty.phone_number }}
+											</div>
+											<div class="form-group">
+												{{ form_guaranty.email }}
+											</div>
+											<div class="form-group">
+												
+													{{ form_guaranty.files }}
+													<div>
+															<a href="{{ order.guaranty.files.url }}">{{ order.guaranty.files.name }}</a>
+														</div>
+													
+												
+											</div>
+											<div class="form-group">
+												{{ form_guaranty.comment }}
+											</div>
+											<div class="form-group right">
+												<button type="submit" class="btn btn-success">Отправить</button>
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				
+
+
+{% endblock %}
